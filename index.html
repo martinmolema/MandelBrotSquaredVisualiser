@@ -7,20 +7,39 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+
+<canvas id="fractalM" width="800" height="800"></canvas>
+<canvas id="fractalJ" width="800" height="800"></canvas>
+
 <svg width="800" height="800" x="0" y="0" id="canvas">
+    <g id="dots"></g>
     <g id="backdrop"></g>
-
     <g id="visualiser"></g>
-
     <circle r="5" stroke-width="1" stroke="purple" cx="0" cy="0" fill="purple" id="constant"></circle>
 
 </svg>
 <div class="textinfo">
+    <fieldset>
+        <legend>Settings</legend>
+    <form>
+        <label for="cbxJulia">Draw Julia on Click</label>
+        <input type="checkbox" name="drawJulia" id="cbxJulia">
+        <label for="rngPalet">Colorpalet starts at</label>
+        <input type="range" min="0" max="16581375"  value="0" name="paletstart" id="rngPalet">
+        <button type="button" id="btnRedraw">Redraw</button>
+        <br>
+        <label for="cbxMandelbrot">Draw Mandelbrot</label>
+        <input type="checkbox" name="drawMandelbrot" id="cbxMandelbrot">
+
+    </form>
+    </fieldset>
     <p>Constant: <span id="complexConstant"></span></p>
     <p>Start     <span id="complexStart"></span></p>
-    <p>Converged:  <span id="Converged"></span></p>
+    <p>Deterministic:  <span id="Converged"></span></p>
     <p>Iterations: <span id="Iterations"></span></p>
 </div>
+
+
 
 </body>
 </html>

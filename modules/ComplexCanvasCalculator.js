@@ -7,11 +7,11 @@ export class ComplexCanvasCalculator {
      * @param one_unit
      */
     constructor(width, height, one_unit) {
-        this.width = width;
-        this.height = height;
+        this.width    = width;
+        this.height   = height;
         this.one_unit = one_unit;
-        this.X0 = width / 2;
-        this.Y0 = height / 2;
+        this.X0       = width / 2;
+        this.Y0       = height / 2;
     }
 
     translateXtoCanvas(x) {

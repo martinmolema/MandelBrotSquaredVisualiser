@@ -24,7 +24,7 @@ export class ComplexNumber {
     set(real, imaginary){
         this.real = real;
         this.imaginary = imaginary;
-
+        return this;
     }// set()
 
     /**
@@ -82,6 +82,8 @@ export class ComplexNumber {
     add(other) {
         this.real      += other.real;
         this.imaginary += other.imaginary;
+
+        return this;
     }// add
 
     /**
@@ -91,6 +93,8 @@ export class ComplexNumber {
     subtract(other) {
         this.real      -= other.real;
         this.imaginary -= other.imaginary;
+
+        return this;
     }// subtract
 
     /**
@@ -138,6 +142,7 @@ export class ComplexNumber {
     copy (other) {
         this.real = other.real;
         this.imaginary = other.imaginary;
+        return this;
     }// copy
 }
 
