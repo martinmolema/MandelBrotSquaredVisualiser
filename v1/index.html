@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mandelbrot calculator</title>
+    <script src="index.js" type="module"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<svg width="800" height="800" x="0" y="0" id="canvas">
+    <g id="backdrop"></g>
+
+    <g id="visualiser"></g>
+
+    <circle r="5" stroke-width="1" stroke="purple" cx="0" cy="0" fill="purple" id="constant"></circle>
+
+</svg>
+<div class="textinfo">
+    <p>Constant: <span id="complexConstant"></span></p>
+    <p>Start     <span id="complexStart"></span></p>
+    <p>Converged:  <span id="Converged"></span></p>
+    <p>Iterations: <span id="Iterations"></span></p>
+</div>
+
+</body>
+</html>
