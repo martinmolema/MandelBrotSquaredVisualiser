@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mandelbrot - v3</title>
+    <script src="index.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: Black;
+            color: white;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div id="eventcatcher">
+    <canvas id="fractal" width="800" height="800" style="float:left"
+            style="position:absolute;top:0px;left:0px"></canvas>
+
+    <svg id="overlay" style="position:absolute;top:0px;left:0px" width="800" height="800">
+        <rect x="0" y="0" width="50" height="50" id="zoombox" fill="rgba(100,0,0,0.4)" stroke="rgba(255,255,255,0.8)"
+              stroke-width="3"></rect>
+    </svg>
+    <fieldset style="position:absolute;top:150px;left:820px; background-color:black">
+        <legend>Zoom preview</legend>
+        <canvas id="zoompreview" width="200" height="200" >
+        </canvas>
+    </fieldset>
+</div>
+
+<div id="boxinfo" style="float:left;">
+    <P>
+        (x1,y1)-(x2,y2) = (
+        <span id="bbx1"></span>&nbsp;,&nbsp;
+        <span id="bby1"></span>)-(
+        <span id="bbx2"></span>&nbsp;,&nbsp;
+        <span id="bby2"></span>)
+        <br>
+        cursor @ (<span id="cursorX"></span>,<span id="cursorY"></span>)
+        <br>
+        Zoombox (x1,y1)-(x2,y2) = (
+        <span id="zoomx1"></span>&nbsp;,&nbsp;
+        <span id="zoomy1"></span>)-(
+        <span id="zoomx2"></span>&nbsp;,&nbsp;
+        <span id="zoomy2"></span>)
+        <br>
+    </P>
+    <label for="rngPalet">Palet start</label>
+    <input type="range" min="0" max="16581375" value="0" name="paletstart" id="rngPalet">
+    <button id="redraw">Redraw zoomed box</button>
+</div>
+</body>
+</html>

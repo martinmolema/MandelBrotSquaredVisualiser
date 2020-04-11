@@ -5,7 +5,8 @@ Please have a look at the sourcecode at [GitHub](https://github.com/martinmolema
 I completely ripped this idea from their video, but the code is all original.
 
 Working examples published at my Homepage
-  * [v1](http://wiskunde.molema.org/mandelbrot/v1).
-  * [v2](http://wiskunde.molema.org/mandelbrot/v2).
+  * [v1](http://wiskunde.molema.org/v1).
+  * [v2](http://wiskunde.molema.org/v2).
+  * [v3](http://wiskunde.molema.org/v3).
 
-Video available at my [Youtube channel](https://youtu.be/gMz6lNZRe2g). 
+Videos available at my [Youtube channel](https://www.youtube.com/playlist?list=PL-n4xRuGyhSGXnHdafaCmPnIzy8SXKyca). 
