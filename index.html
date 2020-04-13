@@ -9,6 +9,7 @@
 <article>
     <section>
         <H1>Mandelbrot</H1>
+        <P>Code available at <a href="https://github.com/martinmolema/MandelBrotSquaredVisualiser">GitHub</a></P>
         <P>
             Visualisation of Mandelbrot calculations<br>
             <span style="font-size:larger">&#x192;</span>
@@ -20,7 +21,7 @@
             with possible variants in Z and C, using the mouse.
         </P>
         <h2>Variant 1</h2>
-
+        <P>Working example can be viewed <a href="v1">here</a></P>
         <p>
             Have a look at this <a href="https://www.youtube.com/watch?v=gMz6lNZRe2g">video</a>.
             <a href="images/mandel-v3.png">
@@ -31,7 +32,9 @@
             </a>
         </p>
         <h2>Variant 2</h2>
-        Have a look at this <a href="https://www.youtube.com/watch?v=d5z3RDMp5lQ">video</a>.
+        <P>Working example can be viewed <a href="v2">here</a></P>
+
+        <p>Have a look at this <a href="https://www.youtube.com/watch?v=d5z3RDMp5lQ">video</a>.</p>
         <a href="images/mandel-v2.png">
             <figure>
                 <figcaption>Mandelbrot version 1</figcaption>
@@ -39,13 +42,61 @@
             </figure>
         </a>
         <h2>Variant 3</h2>
-        Have a look at this <a href="https://youtu.be/ZLaBOvvI0pI">video</a>.
+        <P>Working example can be viewed <a href="v3">here</a></P>
+
+        <p>Have a look at this <a href="https://youtu.be/ZLaBOvvI0pI">video</a>.</p>
         <a href="images/mandel-v3.png">
             <figure>
                 <figcaption>Mandelbrot version 1</figcaption>
                 <img src="images/mandel-v3.png" style="max-height:200px">
             </figure>
         </a>
+        <h2>Variant 4</h2>
+        <P>Working example can be viewed <a href="v4">here</a></P>
+
+        <P>This version was heavily optimised using a complete different way of drawing the pixels. This results in a dramatic boost in performance.
+        First the step was made to create a palette only once, in stead of calculating the colors for every pixels. With a maximum number of iterations
+            the palette only has 200 items which isn&quote;t a big deal memory-wise.
+            <br>
+            Second the way of drawing the pixels is changed: in stead of of drawing each pixel separately directly on the canvas,
+            the pixels are first stored in an ImageData. Thanks to this <a href="https://stackoverflow.com/questions/4899799/whats-the-best-way-to-set-a-single-pixel-in-an-html5-canvas">
+                Stack Overflow</a> answer this works well.
+        </P>
+        <p> The resulting performance boost can be viewed in this source-code image, enriched with data from the Javascript profiler.<br>
+        <a href="images/optimise06.png"><img src="images/optimise06.png" alt="Optimised code" style="max-height: 300px;"></a>
+            <br>Compare with old code:<br>
+        <a href="images/optimise01.png"><img src="images/optimise01.png" alt="Optimised code" style="max-height: 300px;"></a>
+            <br>
+        </p>
+
+        <p>
+            The resulting code is so fast that even on a decent computer a live-preview of the zoombox is possible. This
+            can be enabled using the checkbox on the right.
+        </p>
+        <!-- <p>Have a look at this <a href="https://youtu.be/ZLaBOvvI0pI">video</a>.</p> -->
+        <a href="images/mandel-v4.png">
+            <figure>
+                <figcaption>Mandelbrot version 1</figcaption>
+                <img src="images/mandel-v4.png" style="max-height:200px">
+            </figure>
+        </a>
+
+
+        <h2>Variant 5</h2>
+        <P>Working example can be viewed <a href="v5">here</a></P>
+
+        <P>
+        </P>
+        <p>Have a look at this <a href="https://youtu.be/0KLRVMa_L1o">video</a>.</p>
+        <a href="images/mandel-v5.png">
+            <figure>
+                <figcaption>Mandelbrot version 1</figcaption>
+                <img src="images/mandel-v5.png" style="max-height:200px">
+            </figure>
+        </a>
+
+
+
     </section>
 </article>
 
