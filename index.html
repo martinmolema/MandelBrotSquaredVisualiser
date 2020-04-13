@@ -37,7 +37,7 @@
         <p>Have a look at this <a href="https://www.youtube.com/watch?v=d5z3RDMp5lQ">video</a>.</p>
         <a href="images/mandel-v2.png">
             <figure>
-                <figcaption>Mandelbrot version 1</figcaption>
+                <figcaption>Mandelbrot version 2</figcaption>
                 <img src="images/mandel-v2.png" style="max-height:200px">
             </figure>
         </a>
@@ -47,25 +47,32 @@
         <p>Have a look at this <a href="https://youtu.be/ZLaBOvvI0pI">video</a>.</p>
         <a href="images/mandel-v3.png">
             <figure>
-                <figcaption>Mandelbrot version 1</figcaption>
+                <figcaption>Mandelbrot version 3</figcaption>
                 <img src="images/mandel-v3.png" style="max-height:200px">
             </figure>
         </a>
         <h2>Variant 4</h2>
         <P>Working example can be viewed <a href="v4">here</a></P>
 
-        <P>This version was heavily optimised using a complete different way of drawing the pixels. This results in a dramatic boost in performance.
-        First the step was made to create a palette only once, in stead of calculating the colors for every pixels. With a maximum number of iterations
+        <P>This version was heavily optimised using a complete different way of drawing the pixels. This results in a
+            dramatic boost in performance.
+            First the step was made to create a palette only once, in stead of calculating the colors for every pixels.
+            With a maximum number of iterations
             the palette only has 200 items which isn&quote;t a big deal memory-wise.
             <br>
-            Second the way of drawing the pixels is changed: in stead of of drawing each pixel separately directly on the canvas,
-            the pixels are first stored in an ImageData. Thanks to this <a href="https://stackoverflow.com/questions/4899799/whats-the-best-way-to-set-a-single-pixel-in-an-html5-canvas">
+            Second the way of drawing the pixels is changed: in stead of of drawing each pixel separately directly on
+            the canvas,
+            the pixels are first stored in an ImageData. Thanks to this <a
+                    href="https://stackoverflow.com/questions/4899799/whats-the-best-way-to-set-a-single-pixel-in-an-html5-canvas">
                 Stack Overflow</a> answer this works well.
         </P>
-        <p> The resulting performance boost can be viewed in this source-code image, enriched with data from the Javascript profiler.<br>
-        <a href="images/optimise06.png"><img src="images/optimise06.png" alt="Optimised code" style="max-height: 300px;"></a>
+        <p> The resulting performance boost can be viewed in this source-code image, enriched with data from the
+            Javascript profiler.<br>
+            <a href="images/optimise06.png"><img src="images/optimise06.png" alt="Optimised code"
+                                                 style="max-height: 300px;"></a>
             <br>Compare with old code:<br>
-        <a href="images/optimise01.png"><img src="images/optimise01.png" alt="Optimised code" style="max-height: 300px;"></a>
+            <a href="images/optimise01.png"><img src="images/optimise01.png" alt="Optimised code"
+                                                 style="max-height: 300px;"></a>
             <br>
         </p>
 
@@ -76,7 +83,7 @@
         <!-- <p>Have a look at this <a href="https://youtu.be/ZLaBOvvI0pI">video</a>.</p> -->
         <a href="images/mandel-v4.png">
             <figure>
-                <figcaption>Mandelbrot version 1</figcaption>
+                <figcaption>Mandelbrot version 4</figcaption>
                 <img src="images/mandel-v4.png" style="max-height:200px">
             </figure>
         </a>
@@ -86,15 +93,24 @@
         <P>Working example can be viewed <a href="v5">here</a></P>
 
         <P>
+            And yet another fun Mandelbrot project.
+            <br>
+            Completely refactored the code to speed things up. Now it's possible to have a live preview in the zoombox.
+            <br>
+            The new method separates the calculations from the drawing, making it possible to swap the color palette
+            without doing all the recalculations. So, now the slider for the palette immediately sends a request to
+            calculate a new palette and immediately apply it to the current situation.
+            <br>
+            When zooming in the previous situation is stored in a history list. So, using the right mouse-button you can
+            quickly go back to your previous situation, even preserving the palette.
         </P>
-        <p>Have a look at this <a href="https://youtu.be/0KLRVMa_L1o">video</a>.</p>
+        <p>Have a look at this <a href="https://youtu.be/RR3j4I9A9RY">video</a>.</p>
         <a href="images/mandel-v5.png">
             <figure>
-                <figcaption>Mandelbrot version 1</figcaption>
+                <figcaption>Mandelbrot version 5</figcaption>
                 <img src="images/mandel-v5.png" style="max-height:200px">
             </figure>
         </a>
-
 
 
     </section>
