@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mandelbrot - v7</title>
+    <script type="module" src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+
+</head>
+<body>
+
+
+<div id="eventcatcher">
+    <canvas id="fractal" width="200" height="200"></canvas>
+
+    <svg id="overlay" width="200" height="200">
+        <rect x="0" y="0" width="50" height="50" id="zoombox" fill="rgba(100,0,0,0.4)" stroke="rgba(255,255,255,0.8)"
+              stroke-width="3"></rect>
+        <!--
+        <circle stroke-width="2" stroke="yellow" fill="none" r="200" cx="400" cy="400"  ></circle>
+        <circle stroke-width="2" stroke="yellow" fill="none" r="400" cx="400" cy="400"  ></circle>
+        <line   stroke-width="1" stroke="yellow" x1="0"   x2="800" y1="400" y2="400" ></line>
+        <line   stroke-width="1" stroke="yellow" x1="400" x2="400" y1="0"   y2="800" ></line>
+        -->
+    </svg>
+    <fieldset class="preview">
+        <legend>Zoom preview</legend>
+        <canvas id="zoompreview" width="220" height="220">
+        </canvas>
+    </fieldset>
+</div>
+
+<div id="generalinfo">
+    <fieldset>
+        <legend>Canvas size</legend>
+        <div class="canvasdimensions">
+            <label for="canvas_width" >Width</label>
+            <input id="canvas_width" type="range" min="200" max="1600" step="20" value="400"/>
+            <br>
+            <label for="canvas_height" >Height</label>
+            <input id="canvas_height" type="range" min="200" max="1600" step="20" value="400"/>
+        </div>
+        <p>
+            <span id="canvas_width_text"></span> x
+            <span id="canvas_height_text"></span> pixels
+        </p>
+    </fieldset>
+    <div id="boxinfo">
+        <P>
+            Boundingbox (
+            <span id="bbx1"></span>&nbsp;,&nbsp;
+            <span id="bby1"></span>)-(
+            <span id="bbx2"></span>&nbsp;,&nbsp;
+            <span id="bby2"></span>)
+        </P>
+        <p>
+            cursor @ (<span id="cursorX"></span>,<span id="cursorY"></span>)
+        </p>
+        <p>
+            Zoombox (
+            <span id="zoomx1"></span>&nbsp;,&nbsp;
+            <span id="zoomy1"></span>)-(
+            <span id="zoomx2"></span>&nbsp;,&nbsp;
+            <span id="zoomy2"></span>)
+        </P>
+    </div>
+    <div>
+        <fieldset>
+            <legend>Palette</legend>
+            <div class="paletinfo">
+                <label for="rngPalet">Start</label>
+                <input type="range" min="0" max="100" value="0" name="paletstart" id="rngPalet">
+            </div>
+            <div class="palettetype">
+                <label>RGB</label>
+                <input type="radio" name="palettetype" value="RGB" checked id="paletteRGB">
+                <label>HSL</label>
+                <input type="radio" name="palettetype" value="HSL" id="paletteHSL">
+                <div class="hslinfo invisible" id="hslinfo">
+                    <label for="hslLightness">Lightness</label>
+                    <input type="range" min="0" max="10z0" value="0" name="paletstart" id="hslLightness">
+                    <br>
+                    <label for="hslSaturation">Saturation</label>
+                    <input type="range" min="0" max="100" value="0" name="paletstart" id="hslSaturation">
+                </div>
+            </div>
+        </fieldset>
+        <br><label for="livepreview">Live preview</label>
+        <input type="checkbox" id="livepreview">
+    </div>
+    <P>Time to draw:<span id="drawtime"></span>ms</P>
+    <P>Zoom history:<span id="zoomhistoryinfo"></span> items</P>
+    <p>Zoom factor:<span id="zoomfactor"></span></p>
+    <p>
+        <button id="btnReset">Reset</button>
+        <button id="btnShowHelp">Help!</button>
+    </p>
+
+</div>
+<div id="helptext">
+    <article>
+        <header>
+            Helptext for Mandelbrot viewer
+        </header>
+        <section>
+            <h1>How to</h1>
+            <p>In this section I'll explain how this works.</p>
+            <h2>The canvas</h2>
+            <p></p>
+            <h2>The palette</h2>
+            <p></p>
+            <h3>RGB based palette</h3>
+            <p></p>
+            <h3>HSL based palette</h3>
+            <p></p>
+            <h2>The zoombox and preview window</h2>
+            <p></p>
+            <h2>Live Preview</h2>
+            <p></p>
+            <h2>Reset</h2>
+            <p></p>
+            <h1>Keyboard shortcuts</h1>
+            <table class="keymapping">
+                <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Function</th>
+                    <th>Remarks</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td class="key letter">. or &gt;</td><td class="key function">Palette offset +1%</td><td class="key remark">The palette runs from 0 to 100%. The slider is updated</td></tr>
+                <tr><td class="key letter">, or &lt;</td><td class="key function">Palette offset -1%</td><td class="key remark">The palette runs from 0 to 100%. The slider is updated</td></tr>
+                <tr><td class="key letter">z</td><td class="key function">Toggle the visibility of the zoombox</td><td class="key remark">This hides or shows the zoombox that follows the mousecursor</td></tr>
+                <tr><td class="key letter">r</td><td class="key function">Switch the palette function to RGB</td><td class="key remark">The palette is recalculated based on the RGB palette range (255*255*255)</td></tr>
+                <tr><td class="key letter">h</td><td class="key function">Switch the palette function to HSL</td><td class="key remark">The palette is recalculated based on the HSL-parameters (see above)</td></tr>
+                <tr><td class="key letter">Enter</td><td class="key function">Draw the fractal using the zoomed box</td><td class="key remark">This hides or shows the zoombox that follows the mousecursor</td></tr>
+                <tr><td class="key letter">Backspace</td><td class="key function">Go back one step back in the history of zoomed fractals</td><td class="key remark">This hides or shows the zoombox that follows the mousecursor</td></tr>
+                <tr><td class="key letter">+</td><td class="key function">Grow the zoombox</td><td class="key remark">This makes the zoombox that follows the mousecursor bigger</td></tr>
+                <tr><td class="key letter">-</td><td class="key function">Shrink the zoombox</td><td class="key remark">This makes the zoombox that follows the mousecursor smaller</td></tr>
+                <tr><td class="key letter">/ or ?</td><td class="key function">Open this help screen</td><td class="key remark"></td></tr>
+                </tbody>
+            </table>
+        </section>
+        <footer>
+            <button id="btnCloseHelp">Close</button>
+        </footer>
+    </article>
+
+</div>
+</body>
+</html>
