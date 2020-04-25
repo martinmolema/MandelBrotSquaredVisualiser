@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mandelbrot - v7</title>
+    <title>Mandelbrot - v8</title>
     <script type="module" src="index.js"></script>
     <link rel="stylesheet" href="index.css">
 
@@ -11,7 +11,7 @@
 
 
 <div id="eventcatcher">
-    <canvas id="fractal" width="200" height="200"></canvas>
+    <canvas id="fractalLargeMandelbrot" width="200" height="200"></canvas>
     <canvas id="export" width="1000" height="1000" style="display: none"></canvas>
 
     <svg id="overlay" width="200" height="200">
@@ -20,8 +20,8 @@
     </svg>
     <fieldset class="preview">
         <legend>Zoom preview</legend>
-        <canvas id="zoompreview" width="220" height="220">
-        </canvas>
+        <canvas id="zoompreview" width="220" height="220"></canvas>
+        <canvas id="juliapreview" width="220" height="220"></canvas>
     </fieldset>
 </div>
 

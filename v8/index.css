@@ -8,12 +8,16 @@ body {
     display: none;
 }
 
-#fractal {
+#fractalLargeMandelbrot{
     position: absolute;
     top: 0px;
     left: 0px;
 }
 
+p {
+    margin-top:0px;
+    margin-bottom:0px;
+}
 
 #overlay {
     position: absolute;

@@ -7,14 +7,10 @@ body {
 #boxinfo {
     display: none;
 }
-
-#fractal {
-    position: absolute;
-    top: 0px;
-    left: 0px;
+#juliapreview
+#fractalLargeMandelbrot{
+    float:left;
 }
-
-
 #overlay {
     position: absolute;
     top: 0px;
@@ -26,6 +22,11 @@ fieldset.preview {
     top: 0px;
     right:0px;
     background-color: black;
+}
+
+fieldset p {
+    margin-top:0px;
+    margin-bottom:2px;
 }
 
 #generalinfo {
@@ -127,5 +128,19 @@ div#waitingDialog{
     text-align: center;
 }
 div#waitingDialog.show {
+    display:block;
+}
+div#generalinfo fieldset {
+    min-width:250px;
+}
+
+div#generalinfo legend {
+    cursor:pointer;
+}
+
+.wrapped * {
+    display:none
+}
+.wrapped legend {
     display:block;
 }

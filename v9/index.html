@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mandelbrot - v7</title>
+    <title>Mandelbrot - v8</title>
     <script type="module" src="index.js"></script>
     <link rel="stylesheet" href="index.css">
 
@@ -11,7 +11,8 @@
 
 
 <div id="eventcatcher">
-    <canvas id="fractal" width="200" height="200"></canvas>
+    <canvas id="fractalLargeMandelbrot" width="200" height="200"></canvas>
+    <canvas id="julialarge" width="220" height="220"></canvas>
     <canvas id="export" width="1000" height="1000" style="display: none"></canvas>
 
     <svg id="overlay" width="200" height="200">
@@ -20,19 +21,20 @@
     </svg>
     <fieldset class="preview">
         <legend>Zoom preview</legend>
-        <canvas id="zoompreview" width="220" height="220">
-        </canvas>
+        <canvas id="zoompreview" width="220" height="220"></canvas>
+        <br>
+        <canvas id="juliapreview" width="220" height="220"></canvas>
     </fieldset>
 </div>
 
 <div id="generalinfo">
-    <fieldset>
+    <fieldset class="wrapped">
         <legend>Canvas size</legend>
         <div class="canvasdimensions">
-            <label for="canvas_width" >Width</label>
+            <label for="canvas_width">Width</label>
             <input id="canvas_width" type="range" min="200" max="1600" step="20" value="400"/>
             <br>
-            <label for="canvas_height" >Height</label>
+            <label for="canvas_height">Height</label>
             <input id="canvas_height" type="range" min="200" max="1600" step="20" value="400"/>
         </div>
         <p>
@@ -40,63 +42,48 @@
             <span id="canvas_height_text"></span> pixels
         </p>
     </fieldset>
-    <div id="boxinfo">
-        <P>
-            Boundingbox (
-            <span id="bbx1"></span>&nbsp;,&nbsp;
-            <span id="bby1"></span>)-(
-            <span id="bbx2"></span>&nbsp;,&nbsp;
-            <span id="bby2"></span>)
-        </P>
-        <p>
-            cursor @ (<span id="cursorX"></span>,<span id="cursorY"></span>)
-        </p>
-        <p>
-            Zoombox (
-            <span id="zoomx1"></span>&nbsp;,&nbsp;
-            <span id="zoomy1"></span>)-(
-            <span id="zoomx2"></span>&nbsp;,&nbsp;
-            <span id="zoomy2"></span>)
-        </P>
-    </div>
-    <div>
-        <fieldset>
-            <legend>Palette</legend>
-            <div class="paletinfo">
-                <label for="rngPalet">Start</label>
-                <input type="range" min="0" max="100" value="0" name="paletstart" id="rngPalet">
+    <fieldset class="wrapped">
+        <legend>Palette</legend>
+        <div class="paletinfo">
+            <label for="rngPalet">Start</label>
+            <input type="range" min="0" max="100" value="0" name="paletstart" id="rngPalet">
+        </div>
+        <div class="palettetype">
+            <label for="paletteRGB">RGB</label>
+            <input type="radio" name="palettetype" value="RGB" checked id="paletteRGB">
+            <label for="paletteHSL">HSL</label>
+            <input type="radio" name="palettetype" value="HSL" id="paletteHSL">
+            <div class="hslinfo invisible" id="hslinfo">
+                <label for="hslLightness">Lightness</label>
+                <input type="range" min="0" max="10z0" value="0" name="paletstart" id="hslLightness">
+                <br>
+                <label for="hslSaturation">Saturation</label>
+                <input type="range" min="0" max="100" value="0" name="paletstart" id="hslSaturation">
             </div>
-            <div class="palettetype">
-                <label>RGB</label>
-                <input type="radio" name="palettetype" value="RGB" checked id="paletteRGB">
-                <label>HSL</label>
-                <input type="radio" name="palettetype" value="HSL" id="paletteHSL">
-                <div class="hslinfo invisible" id="hslinfo">
-                    <label for="hslLightness">Lightness</label>
-                    <input type="range" min="0" max="10z0" value="0" name="paletstart" id="hslLightness">
-                    <br>
-                    <label for="hslSaturation">Saturation</label>
-                    <input type="range" min="0" max="100" value="0" name="paletstart" id="hslSaturation">
-                </div>
-            </div>
-        </fieldset>
-        <br><label for="livepreview">Live preview</label>
+        </div>
+    </fieldset>
+    <fieldset class="wrapped">
+        <legend>Zoom</legend>
+        <label for="livepreview">Live preview</label>
         <input type="checkbox" id="livepreview">
-    </div>
-    <P>Time to draw:<span id="drawtime"></span>ms</P>
-    <P>Zoom history:<span id="zoomhistoryinfo"></span> items</P>
-    <p>Zoom factor:<span id="zoomfactor"></span></p>
-    <p>
-        <button id="btnReset">Reset</button>
-        <button id="btnShowHelp">Help!</button>
-    </p>
-    <fieldset>
+        <p>Zoom factor:<span id="zoomfactor"></span></p>
+        <P>Zoom history:<span id="zoomhistoryinfo"></span> items</P>
+    </fieldset>
+    <fieldset class="wrapped">
+        <legend>Other</legend>
+        <P>Time to draw:<span id="drawtime"></span>ms</P>
+        <p>
+            <button id="btnReset">Reset</button>
+            <button id="btnShowHelp">Help!</button>
+        </p>
+    </fieldset>
+    <fieldset class="wrapped">
         <legend>Export</legend>
         <button id="btnExport">Export</button>
         <br>
-        <label for="hslSaturation">Width</label>
+        <label for="sliderExportWidth">Width</label>
         <input type="range" min="400" max="8000" value="1000" step="100" name="exportwidth" id="sliderExportWidth">
-        <span id="exportWidthValue"></span>px
+        <span id="exportWidthValue"></span>px<span>
     </fieldset>
 </div>
 <div id="helptext">
@@ -140,6 +127,7 @@
                 <tr><td class="key letter">Backspace</td><td class="key function">Go back one step back in the history of zoomed fractals</td><td class="key remark">This hides or shows the zoombox that follows the mousecursor</td></tr>
                 <tr><td class="key letter">+</td><td class="key function">Grow the zoombox</td><td class="key remark">This makes the zoombox that follows the mousecursor bigger</td></tr>
                 <tr><td class="key letter">-</td><td class="key function">Shrink the zoombox</td><td class="key remark">This makes the zoombox that follows the mousecursor smaller</td></tr>
+                <tr><td class="key letter">L</td><td class="key function">Toggle Live Preview</td><td class="key remark"></td></tr>
                 <tr><td class="key letter">/ or ?</td><td class="key function">Open this help screen</td><td class="key remark"></td></tr>
                 </tbody>
             </table>
