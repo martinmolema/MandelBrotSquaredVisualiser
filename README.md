@@ -12,7 +12,7 @@ Working examples published at my Homepage
   * [v5](http://wiskunde.molema.org/v5) / yet another new way of calculating, live palette coloring and history 
   * [v6](http://wiskunde.molema.org/v5) / 
   * [v7](http://wiskunde.molema.org/v5) / 
-  * [v8](http://wiskunde.molema.org/v5) / Speed improvements/julia set previes
-  * [v9](http://wiskunde.molema.org/v5) / Speed + code improvements; declutter GUI; 
+  * [v8](http://wiskunde.molema.org/v5) / Speed improvements/julia set preview
+  * [v9](http://wiskunde.molema.org/v5) / Speed + code improvements; declutter GUI; large Julia Set. 
 
 Videos available at my [Youtube channel](https://www.youtube.com/playlist?list=PL-n4xRuGyhSGXnHdafaCmPnIzy8SXKyca). 
