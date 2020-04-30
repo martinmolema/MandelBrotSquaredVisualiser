@@ -10,9 +10,9 @@ Working examples published at my Homepage
   * [v3](http://wiskunde.molema.org/v3) / zooming and zoom preview box
   * [v4](http://wiskunde.molema.org/v4) / live preview, new way of calculating
   * [v5](http://wiskunde.molema.org/v5) / yet another new way of calculating, live palette coloring and history 
-  * [v6](http://wiskunde.molema.org/v5) / 
-  * [v7](http://wiskunde.molema.org/v5) / RGB + HSL palette | proper history for zoom+palette | basic help-screen with the keyboard shortcuts.| resizable canvas | more shortcut keys (check out the dot and comma for color cycling) 
-  * [v8](http://wiskunde.molema.org/v5) / Speed improvements/julia set preview
-  * [v9](http://wiskunde.molema.org/v5) / Speed + code improvements; declutter GUI; large Julia Set. 
+  * [v6](http://wiskunde.molema.org/v7) / 
+  * [v7](http://wiskunde.molema.org/v8) / RGB + HSL palette | proper history for zoom+palette | basic help-screen with the keyboard shortcuts.| resizable canvas | more shortcut keys (check out the dot and comma for color cycling) 
+  * [v8](http://wiskunde.molema.org/v8) / Speed improvements/julia set preview
+  * [v9](http://wiskunde.molema.org/v9) / Speed + code improvements; declutter GUI; large Julia Set. 
 
 Videos available at my [Youtube channel](https://www.youtube.com/playlist?list=PL-n4xRuGyhSGXnHdafaCmPnIzy8SXKyca). 
