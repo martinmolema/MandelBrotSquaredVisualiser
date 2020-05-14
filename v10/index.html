@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mandelbrot - v9</title>
+    <title>Mandelbrot - v10</title>
     <script type="module" src="index.js"></script>
     <link rel="stylesheet" href="index.css">
 
@@ -12,19 +12,21 @@
 
 <div id="eventcatcher">
     <canvas id="fractalLargeMandelbrot" width="200" height="200"></canvas>
-    <canvas id="julialarge" width="220" height="220"></canvas>
     <canvas id="exportMandelbrot" width="1000" height="1000" style="display: none"></canvas>
-    <canvas id="exportJulia" width="1000" height="1000" style="display: none"></canvas>
 
     <svg id="overlay" width="200" height="200">
-        <rect x="0" y="0" width="50" height="50" id="zoombox" fill="rgba(100,0,0,0.4)" stroke="rgba(255,255,255,0.8)"
+        <g id="zoomboxsvg">
+        <rect x="0" y="0"
+              width="50" height="50"
+              id="zoombox"
+              fill="rgba(100,0,0,0.4)" stroke="rgba(255,255,255,0.8)"
               stroke-width="3"></rect>
+        </g>
+        <g id="visualiser"></g>
     </svg>
     <fieldset class="preview">
         <legend>Zoom preview</legend>
         <canvas id="zoompreview" width="220" height="220"></canvas>
-        <br>
-        <canvas id="juliapreview" width="220" height="220"></canvas>
     </fieldset>
 </div>
 
@@ -85,12 +87,6 @@
         <label for="sliderExportWidth">Width</label>
         <input type="range" min="400" max="8000" value="1000" step="100" name="exportwidth" id="sliderExportWidth">
         <span id="exportWidthValue">px</span>
-        <br/>
-        <input type="checkbox" id="cbx_exportMandel">
-        <label for="cbx_exportMandel">Mandelbrot</label>
-        <br/>
-        <input type="checkbox" id="cbx_exportJulia">
-        <label for="cbx_exportJulia">Julia</label>
     </fieldset>
 </div>
 <div id="helptext">

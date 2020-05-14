@@ -1,0 +1,146 @@
+body {
+    font-family: sans-serif;
+    background-color: Black;
+    color: white;
+}
+
+#boxinfo {
+    display: none;
+}
+#juliapreview
+#fractalLargeMandelbrot{
+    float:left;
+}
+#overlay {
+    position: absolute;
+    top: 0px;
+    left: 0px
+}
+
+fieldset.preview {
+    position: absolute;
+    top: 0px;
+    right:0px;
+    background-color: black;
+}
+
+fieldset p {
+    margin-top:0px;
+    margin-bottom:2px;
+}
+
+#generalinfo {
+    position: absolute;
+    bottom: 0px;
+    right:0px;
+}
+
+div.canvasdimensions label {
+    display: inline-block;
+    width:4em;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+div.hslinfo label,
+div.paletinfo label {
+    display: inline-block;
+    width:6em;
+}
+
+div#helptext {
+    display: none;
+    width:1000px;
+    height:500px;
+    position:absolute;
+    top: 100px;
+    left:100px;
+    z-index: 1000;
+    background-color:lightgray;
+    border:2px inset gray;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 4px 14px 8px rgba(20,20,20,0.8) ;
+}
+
+div#helptext article {
+    padding:20px;
+    color:black;
+    width:95%;
+    display:grid;
+}
+
+div#helptext article section {
+    overflow-y: scroll;
+    height:370px;
+}
+
+div#helptext article header,
+div#helptext article footer {
+    background:#333;
+    padding:15px;
+    width:auto;
+    color:white;
+    font-weight: bold;
+}
+
+div#helptext article header {
+    grid-row: 1;
+}
+
+div#helptext article section {
+    grid-row:2;
+}
+
+div#helptext article footer {
+    grid-row: 3;
+}
+
+table.keymapping {
+    border-collapse: collapse;
+}
+
+table.keymapping thead {
+    background-color:lightblue;
+}
+table.keymapping td {
+    border:1px solid darkgray;
+    padding:4px;
+}
+
+table.keymapping td.key.letter {
+    font-size:25pt;
+    text-align: center;
+}
+div#waitingDialog{
+    position:absolute;
+    display:none;
+    top:10%;
+    left:10%;
+    width:200px;
+    height:200px;
+    z-index: 1000;
+    border:2px solid blue;
+    padding:10px;
+    background-color:lightgray;
+    color:black;
+    text-align: center;
+}
+div#waitingDialog.show {
+    display:block;
+}
+div#generalinfo fieldset {
+    min-width:250px;
+}
+
+div#generalinfo legend {
+    cursor:pointer;
+}
+
+.wrapped * {
+    display:none
+}
+.wrapped legend {
+    display:block;
+}

@@ -63,9 +63,9 @@ export class GUIDriver {
     initConstants(){
         this.constants        = new ConstantsWithPixels(this.canvasLargeMandelbrot, 0, 0, 0, 0);
         this.constantsPreview = new ConstantsWithPixels(this.canvasPreview, 0, 0, 0, 0);
-        this.constantsExport  = new ConstantsWithPixels(this.canvasExport, 0,0,0,0);
+        this.constantsExport  = new ConstantsWithPixels(this.canvasExportM, 0,0,0,0);
 
-        this.constantsExport.setFeedbackElement(document.getElementById("progressbar"));
+        this.constantsExportM.setFeedbackElement(document.getElementById("progressbar"));
 
         this.adjustCanvasDimensions(4);
 
@@ -342,7 +342,7 @@ export class GUIDriver {
 
         this.elmSliderExportWidth.addEventListener("change", (evt) => {
             this.elmExportWidthText.textContent = this.elmSliderExportWidth.value;
-            this.canvasExport.width = parseInt(this.elmSliderExportWidth.value);
+            this.canvasExportM.width = parseInt(this.elmSliderExportWidth.value);
         });
 
         document.getElementById("btnExport").addEventListener("click", () => {
@@ -350,18 +350,18 @@ export class GUIDriver {
             var rect = this.constants.boundingbox;
 
             // update the off-screen canvas to reflect the current fractal size and bounding box
-            this.constantsExport.update(rect);
+            this.constantsExportM.update(rect);
 
-            this.canvasExport.height = this.canvasExport.width * rect.ratioHW;
-            this.constantsExport.updateCanvas(this.canvasExport);
+            this.canvasExportM.height = this.canvasExportM.width * rect.ratioHW;
+            this.constantsExportM.updateCanvas(this.canvasExportM);
 
             let msg = 'Will export this fractal in a new tab page using resolution of ' +
-                this.constantsExport.canvas_dimensions.w +
-                "x" + this.constantsExport.canvas_dimensions.h +" pixels. This may take a while. Please be patient.";
+                this.constantsExportM.canvas_dimensions.w +
+                "x" + this.constantsExportM.canvas_dimensions.h +" pixels. This may take a while. Please be patient.";
             alert(msg);
 
             // do the actual drawing
-            this.draw(this.constantsExport);
+            this.draw(this.constantsExportM);
 
             // open the result in new tab
             var win = window.open();
@@ -371,7 +371,7 @@ export class GUIDriver {
                 // convert te contents of the canvas to a BLOB. This BLOB can be used to convert to and
                 // ObjectURL containing an image that can be used as an image-source, or as we do here:
                 // set the URL of the new window to the image.
-                this.canvasExport.toBlob(function (blob) {
+                this.canvasExportM.toBlob(function (blob) {
                     var url = URL.createObjectURL(blob);
                     win.document.location = url;
                 });
@@ -660,13 +660,13 @@ export class GUIDriver {
         this.constants.updateCanvas(this.canvasLargeMandelbrot);
 
         this.canvasPreview.height = this.canvasPreview.width / ratio;
-        this.canvasExport.height  = this.canvasExport.width / ratio;
+        this.canvasExportM.height  = this.canvasExportM.width / ratio;
 
         this.constantsPreview.update(rect);
         this.constantsPreview.updateCanvas(this.canvasPreview);
 
-        this.constantsExport.update(rect);
-        this.constantsExport.updateCanvas(this.canvasExport);
+        this.constantsExportM.update(rect);
+        this.constantsExportM.updateCanvas(this.canvasExportM);
 
         this.svgOverlay.setAttribute("width",  this.canvasLargeMandelbrot.width);
         this.svgOverlay.setAttribute("height", this.canvasLargeMandelbrot.height);

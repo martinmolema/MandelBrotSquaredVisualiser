@@ -1,0 +1,35 @@
+<!--
+ * @summary A simple example how to use the canvas in combination with createImageData to cycle colors quickly
+ * @Author: Martin Molema <martin@molema.org>
+ * @created: 2020-05-14
+ * @File: /example/index.html
+ * @copyright 2020
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example canvas quick draw and palette usage</title>
+    <script src="index.js"></script>
+</head>
+<body>
+<label for="paletslider">Palet offset:</label>
+<input type="range" min="0" max="100" value="0" id="paletslider">
+<p>Click once on the slider and use the keyboard (arrow-left / arrow-right)
+    to smoothly make the slider move from left to right.
+    Notice when moving the sliders the lines seem to move. However, only the colors are changed very quickly. The
+    actual calculation of the lines is done only once.
+    <br>
+    The circle lying behind the canvas is drawn using am SVG-element. Because the lines use some alpha-blending and the
+    SVG-element and the canvas are fixed on the same position in the right order (canvas on top of the SVG), it is
+    visible through the canvas.
+</p>
+<svg height="400" width="400"
+     style="position:relative;left:0px;float:left">
+    <circle r="100" cx="200" cy="200" stroke="red" stroke-width="4" fill="blue"/>
+</svg>
+<canvas id="mycanvas" width="400" height="400"
+        style="position:absolute;left:0px;float:left"></canvas>
+
+</body>
+</html>

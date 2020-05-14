@@ -20,11 +20,12 @@ export class GUIDriver {
         this.initConstants();
         this.setupEventhandlers();
 
-        this.drawerLargeMandelbrot = new MandelbrotAlternateFractalDrawer ( this.constantsMandelbrotLarge, this.palettes, maxIterations, 'mandelbrotlarge');
-        this.drawerLargeJulia      = new JuliaAlternateFractalDrawer      ( this.constantsJuliaLarge,      this.palettes, maxIterations, 'julialarge');
-        this.drawerZoom            = new MandelbrotAlternateFractalDrawer ( this.constantsPreview,         this.palettes, maxIterations, 'zoom');
-        this.drawerExport          = new MandelbrotAlternateFractalDrawer ( this.constantsExport,          this.palettes, maxIterations, 'export');
-        this.drawerJulia           = new JuliaAlternateFractalDrawer      ( this.constantsJulia,           this.palettes, maxIterations, 'julia');
+        this.drawerLargeMandelbrot  = new MandelbrotAlternateFractalDrawer ( this.constantsMandelbrotLarge, this.palettes, maxIterations, 'mandelbrotlarge');
+        this.drawerLargeJulia       = new JuliaAlternateFractalDrawer      ( this.constantsJuliaLarge,      this.palettes, maxIterations, 'julialarge');
+        this.drawerZoom             = new MandelbrotAlternateFractalDrawer ( this.constantsPreview,         this.palettes, maxIterations, 'zoom');
+        this.drawerExportMandelbrot = new MandelbrotAlternateFractalDrawer ( this.constantsExportM,         this.palettes, maxIterations, 'exportMandelbrot');
+        this.drawerExportJulia      = new JuliaAlternateFractalDrawer      ( this.constantsExportJ,         this.palettes, maxIterations, 'exportJulia');
+        this.drawerJulia            = new JuliaAlternateFractalDrawer      ( this.constantsJulia,           this.palettes, maxIterations, 'julia');
 
         this.redrawBoth();
     }// constructor
@@ -70,13 +71,12 @@ export class GUIDriver {
     }// setupCanvas()
 
     initConstants(){
-        this.constantsMandelbrotLarge           = new ConstantsWithPixels(this.canvasLargeMandelbrot, 0, 0, 0, 0, 'mandelbrotlarge');
-        this.constantsJuliaLarge = new ConstantsWithPixels(this.canvasJuliaLarge, 0, 0, 0, 0, 'julialarge');
-        this.constantsPreview    = new ConstantsWithPixels(this.canvasPreview, 0, 0, 0, 0, 'preview');
-        this.constantsExport     = new ConstantsWithPixels(this.canvasExport, 0,0,0,0, 'export');
-        this.constantsJulia      = new ConstantsWithPixels(this.canvasJuliaPreview, 0,0,0,0, 'julia');
-
-        this.constantsExport.setFeedbackElement(document.getElementById("progressbar"));
+        this.constantsMandelbrotLarge = new ConstantsWithPixels(this.canvasLargeMandelbrot, 0, 0, 0, 0, 'mandelbrotlarge');
+        this.constantsJuliaLarge      = new ConstantsWithPixels(this.canvasJuliaLarge, 0, 0, 0, 0, 'julialarge');
+        this.constantsPreview         = new ConstantsWithPixels(this.canvasPreview, 0, 0, 0, 0, 'preview');
+        this.constantsExportM         = new ConstantsWithPixels(this.canvasExportM, 0,0,0,0, 'exportMandelbrot');
+        this.constantsExportJ         = new ConstantsWithPixels(this.canvasExportM, 0,0,0,0, 'exportJulia');
+        this.constantsJulia           = new ConstantsWithPixels(this.canvasJuliaPreview, 0,0,0,0, 'julia');
 
         this.adjustCanvasDimensions(4);
 
@@ -120,7 +120,8 @@ export class GUIDriver {
         this.canvasPreview         = document.getElementById('zoompreview');
         this.canvasJuliaPreview    = document.getElementById("juliapreview");
 
-        this.canvasExport          = document.getElementById("export");
+        this.canvasExportM         = document.getElementById("exportMandelbrot");
+        this.canvasExportJ         = document.getElementById("exportJulia");
         this.svgOverlay            = document.getElementById('overlay');
 
         this.elmCanvasWidthSlider  = document.getElementById("canvas_width");
@@ -363,41 +364,49 @@ export class GUIDriver {
 
         this.elmSliderExportWidth.addEventListener("change", () => {
             this.elmExportWidthText.textContent = this.elmSliderExportWidth.value;
-            this.canvasExport.width = parseInt(this.elmSliderExportWidth.value);
+            this.canvasExportM.width = parseInt(this.elmSliderExportWidth.value);
+            this.canvasExportJ.width = parseInt(this.elmSliderExportWidth.value);
         });
 
         document.getElementById("btnExport").addEventListener("click", () => {
-            // FIXME: need to export Julia as well
-
             // get the bounding box to be drawn using the main fractal boundingbox
-            var rect = this.constantsMandelbrotLarge.boundingbox;
+            const rect = this.constantsMandelbrotLarge.boundingbox;
+
+            const do_exportMandel = document.getElementById("cbx_exportMandel").checked;
+            const do_exportJulia  = document.getElementById("cbx_exportJulia").checked;
+
+            if (!do_exportJulia && !do_exportMandel) return;
 
             // update the off-screen canvas to reflect the current fractal size and bounding box
-            this.constantsExport.update(rect);
+            this.constantsExportM.update(rect);
+            this.constantsExportJ.update(rect);
 
-            this.canvasExport.height = this.canvasExport.width * rect.ratioHW;
-            this.constantsExport.updateCanvas(this.canvasExport);
+            this.canvasExportM.height = this.canvasExportM.width * rect.ratioHW;
+            this.canvasExportJ.height = this.canvasExportJ.width * rect.ratioHW;
+
+            this.constantsExportM.updateCanvas(this.canvasExportM);
+            this.constantsExportJ.updateCanvas(this.canvasExportJ);
 
             let msg = 'Will export this fractal in a new tab page using resolution of ' +
-                this.constantsExport.canvas_dimensions.w +
-                "x" + this.constantsExport.canvas_dimensions.h +" pixels. This may take a while. Please be patient.";
+                this.constantsExportM.canvas_dimensions.w +
+                "x" + this.constantsExportM.canvas_dimensions.h +" pixels. This may take a while. Please be patient.";
             alert(msg);
 
             // do the actual drawing
-            this.drawerExport.draw();
-
-            // open the result in new tab
-            var win = window.open();
-            if (!win) {
-                alert("Browser will not allow new tab to be opened. Please give permission!");
-            }else {
-                // convert te contents of the canvas to a BLOB. This BLOB can be used to convert to and
-                // ObjectURL containing an image that can be used as an image-source, or as we do here:
-                // set the URL of the new window to the image.
-                this.canvasExport.toBlob(function (blob) {
-                    win.document.location = URL.createObjectURL(blob);
+            if (do_exportMandel){
+                this.drawerExportMandelbrot.draw();
+                var windowMandelbrot = window.open();
+                this.canvasExportM.toBlob(function (blob1) {
+                    windowMandelbrot.document.location = URL.createObjectURL(blob1);
                 });
-            }//if/then window opened
+            }
+            if (do_exportJulia) {
+                this.drawerExportJulia.draw();
+                var windowJulia = window.open();
+                this.canvasExportJ.toBlob(function (blob2) {
+                    windowJulia.document.location = URL.createObjectURL(blob2);
+                });
+            }
         });
     }// setupEventhandlers()
 
@@ -550,13 +559,13 @@ export class GUIDriver {
         this.constantsJuliaLarge.updateCanvas(this.canvasJuliaLarge);
 
         this.canvasPreview.height = this.canvasPreview.width / ratio;
-        this.canvasExport.height  = this.canvasExport.width / ratio;
+        this.canvasExportM.height  = this.canvasExportM.width / ratio;
 
         this.constantsPreview.update(rect);
         this.constantsPreview.updateCanvas(this.canvasPreview);
 
-        this.constantsExport.update(rect);
-        this.constantsExport.updateCanvas(this.canvasExport);
+        this.constantsExportM.update(rect);
+        this.constantsExportM.updateCanvas(this.canvasExportM);
 
         this.constantsJulia.update(rect);
         this.constantsJulia.updateCanvas(this.canvasJuliaPreview);

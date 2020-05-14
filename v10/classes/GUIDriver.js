@@ -4,8 +4,8 @@ import {HistoryList} from "./HistoryList.js";
 import {Zoombox} from "./Zoombox.js";
 import {Rectangle} from "./Dimensions.js";
 import {MandelbrotAlternateFractalDrawer} from "./MandelbrotAlternateFractalDrawer.js";
-import {JuliaAlternateFractalDrawer} from "./JuliaAlternateFractalDrawer.js";
-
+import {SVGSupport} from "../../v1/modules/SVGSupport.js";
+import {IterationLines} from "./IterationLines.js";
 
 export class GUIDriver {
 
@@ -20,10 +20,11 @@ export class GUIDriver {
         this.initConstants();
         this.setupEventhandlers();
 
-        this.drawerLargeMandelbrot = new MandelbrotAlternateFractalDrawer(this.constants,        this.palettes, maxIterations, 'mandelbrotlarge');
-        this.drawerZoom            = new MandelbrotAlternateFractalDrawer(this.constantsPreview, this.palettes, maxIterations, 'zoom');
-        this.drawerExport          = new MandelbrotAlternateFractalDrawer(this.constantsExportM,  this.palettes, maxIterations, 'export');
-        this.drawerJulia           = new JuliaAlternateFractalDrawer     (this.constantsJulia,   this.palettes, maxIterations, 'julia');
+        this.drawerLargeMandelbrot  = new MandelbrotAlternateFractalDrawer ( this.constantsMandelbrotLarge, this.palettes, maxIterations, 'mandelbrotlarge');
+        this.drawerZoom             = new MandelbrotAlternateFractalDrawer ( this.constantsPreview,         this.palettes, maxIterations, 'zoom');
+        this.drawerExportMandelbrot = new MandelbrotAlternateFractalDrawer ( this.constantsExportM,         this.palettes, maxIterations, 'exportMandelbrot');
+
+        this.drawerLines = new IterationLines(this.elmCanvasLines);
 
         this.redrawBoth();
     }// constructor
@@ -63,19 +64,17 @@ export class GUIDriver {
         localStorage.setItem("CANVAS_WIDTH",  this.canvasLargeMandelbrot.width);
         localStorage.setItem("CANVAS_HEIGHT", this.canvasLargeMandelbrot.height);
 
+
     }// setupCanvas()
 
     initConstants(){
-        this.constants        = new ConstantsWithPixels(this.canvasLargeMandelbrot, 0, 0, 0, 0, 'mandel');
-        this.constantsPreview = new ConstantsWithPixels(this.canvasPreview, 0, 0, 0, 0, 'preview');
-        this.constantsExportM = new ConstantsWithPixels(this.canvasExportM, 0,0,0,0, 'export');
-        this.constantsJulia   = new ConstantsWithPixels(this.canvasJuliaPreview, 0,0,0,0, 'julia');
-
-        this.constantsExportM.setFeedbackElement(document.getElementById("progressbar"));
+        this.constantsMandelbrotLarge = new ConstantsWithPixels(this.canvasLargeMandelbrot, 0, 0, 0, 0, 'mandelbrotlarge');
+        this.constantsPreview         = new ConstantsWithPixels(this.canvasPreview, 0, 0, 0, 0, 'preview');
+        this.constantsExportM         = new ConstantsWithPixels(this.canvasExportM, 0,0,0,0, 'exportMandelbrot');
 
         this.adjustCanvasDimensions(4);
 
-        this.startBoundingBox = this.constants.boundingbox.clone();
+        this.startBoundingBox = this.constantsMandelbrotLarge.boundingbox.clone();
 
         this.historyZoom    = new HistoryList("zoom");
         this.historyPalette = new HistoryList("palette");
@@ -86,12 +85,12 @@ export class GUIDriver {
         let paletteStart = this.historyPalette.peek();
         if (historyStart !== null && paletteStart !== null) {
 
-            this.constants.restoreFromHistoryObject(historyStart);
+            this.constantsMandelbrotLarge.restoreFromHistoryObject(historyStart);
             this.constantsPreview.restoreFromHistoryObject(historyStart);
             this.palettes.restoreFromHistoryObject(paletteStart);
         }
 
-        this.zoombox = new Zoombox(this.constants, this.zoombox_width_percentage, this.zoombox_height_percentage, this.elmZoombox);
+        this.zoombox = new Zoombox(this.constantsMandelbrotLarge, this.zoombox_width_percentage, this.zoombox_height_percentage, this.elmZoombox);
 
         this.mouseX = 0; this.mouseY = 0;
 
@@ -109,24 +108,21 @@ export class GUIDriver {
          */
         this.canvasLargeMandelbrot = document.getElementById('fractalLargeMandelbrot');
         this.canvasPreview         = document.getElementById('zoompreview');
-        this.canvasExportM         = document.getElementById("export");
-        this.canvasJuliaPreview    = document.getElementById("juliapreview");
+        this.canvasExportM         = document.getElementById("exportMandelbrot");
         this.svgOverlay            = document.getElementById('overlay');
+
 
         this.elmCanvasWidthSlider  = document.getElementById("canvas_width");
         this.elmCanvasHeightSlider = document.getElementById("canvas_height");
         this.elmCanvasWidthText    = document.getElementById("canvas_width_text");
         this.elmCanvasHeightText   = document.getElementById("canvas_height_text");
 
-        this.elmPaletteHSLLightness = document.getElementById("hslLightness");
+        this.elmCanvasLines        = document.getElementById("visualiser");
+        this.svgVisualiser         = new SVGSupport(this.elmCanvasLines);
+
+        this.elmPaletteHSLLightness  = document.getElementById("hslLightness");
         this.elmPaletteHSLSaturation = document.getElementById("hslSaturation");
         this.elmHSLInfo = document.getElementById("hslinfo");
-
-        // Bounding box info
-        this.elmX1 = document.getElementById('bbx1');
-        this.elmY1 = document.getElementById('bby1');
-        this.elmX2 = document.getElementById('bbx2');
-        this.elmY2 = document.getElementById('bby2');
 
         // cursor location
         this.elmCursorX = document.getElementById('cursorX');
@@ -139,8 +135,8 @@ export class GUIDriver {
 
         this.eventcatcher   = document.getElementById("eventcatcher");
         this.elmPaletslider = document.getElementById("rngPalet");
-        this.elmZoombox     = document.getElementById('zoombox');
         this.elmZoomfactor  = document.getElementById("zoomfactor");
+        this.elmZoombox     = document.getElementById('zoombox');
 
         this.elmSetPaletteRGB = document.getElementById("paletteRGB");
         this.elmSetPaletteHSL = document.getElementById("paletteHSL");
@@ -149,6 +145,12 @@ export class GUIDriver {
         this.elmSliderExportWidth = document.getElementById("sliderExportWidth");
         this.elmExportWidthText = document.getElementById("exportWidthValue");
         this.elmExportWidthText.textContent = this.elmSliderExportWidth.value;
+    }
+
+    redrawIteratorLines(){
+        this.drawerLines.updateFractalPlane(this.constantsMandelbrotLarge.boundingbox);
+        this.drawerLines.updateSVGSize(this.elmCanvasLines);
+        this.drawerLines.draw();
     }
 
     redrawMainFractal(){
@@ -161,8 +163,6 @@ export class GUIDriver {
 
     redrawZoomwindow(){
         this.drawerZoom.draw();
-        this.drawerJulia.draw();
-        //value.next();
     }
 
     redrawBoth(){
@@ -175,26 +175,33 @@ export class GUIDriver {
             let w = parseInt(this.elmCanvasWidthSlider.value);
 
             this.canvasLargeMandelbrot.width = w;
+
             localStorage.setItem("CANVAS_WIDTH", w);
 
             this.clearHistory();
 
             this.adjustCanvasDimensions(4);
-            this.zoombox.updateCanvas(this.constants);
+            this.zoombox.updateCanvas(this.constantsMandelbrotLarge);
             this.redrawBoth();
 
+            this.drawerLines.updateFractalPlane(this.constantsMandelbrotLarge.boundingbox);
+            this.drawerLines.updateSVGSize(this.elmCanvasLines);
         }); // eventListener change (slider width)
 
         this.elmCanvasHeightSlider.addEventListener("change", () => {
             let h = parseInt(this.elmCanvasHeightSlider.value);
             this.canvasLargeMandelbrot.height = h;
+
             localStorage.setItem("CANVAS_HEIGHT", h);
 
             this.clearHistory();
 
             this.adjustCanvasDimensions(4);
-            this.zoombox.updateCanvas(this.constants);
+            this.zoombox.updateCanvas(this.constantsMandelbrotLarge);
             this.redrawBoth();
+
+            this.drawerLines.updateFractalPlane(this.constantsMandelbrotLarge.boundingbox);
+            this.drawerLines.updateSVGSize(this.elmCanvasLines);
         }); // eventListener change (slider height)
 
         /**
@@ -206,8 +213,9 @@ export class GUIDriver {
             this.mouseX = evt.offsetX;
             this.mouseY = evt.offsetY;
 
-            this.recalculateZoombox();
+            this.drawerLines.setCoordinates(this.mouseX, this.mouseY);
 
+            this.recalculateZoombox();
         }); // eventListener  mousemove (eventcatcher)
 
         /**
@@ -267,6 +275,9 @@ export class GUIDriver {
                 case "h":
                     this.setActivePalette("HSL");
                     break;
+                case "l":
+                    this.elmLivePreview.checked = !this.elmLivePreview.checked;
+                    break;
                 case "z":
                     this.elmZoombox.classList.toggle("invisible");
                     break;
@@ -294,8 +305,8 @@ export class GUIDriver {
 
             // left mouse
             this.constantsPreview.update(this.zoombox.boundingbox);
-            this.constantsJulia.update(this.zoombox.boundingbox);
             this.redrawZoomwindow();
+            this.redrawIteratorLines();
 
             return false;
         });// eventListener click (eventcatcher)
@@ -315,7 +326,7 @@ export class GUIDriver {
         );// eventListener input (paletslider)
 
         document.getElementById("btnReset").addEventListener("click", () => {
-            this.constants.update(this.startBoundingBox);
+            this.constantsMandelbrotLarge.update(this.startBoundingBox);
             this.constantsPreview.update(this.startBoundingBox);
 
             this.clearHistory();
@@ -355,12 +366,15 @@ export class GUIDriver {
 
         document.getElementById("btnExport").addEventListener("click", () => {
             // get the bounding box to be drawn using the main fractal boundingbox
-            var rect = this.constants.boundingbox;
+            const rect = this.constantsMandelbrotLarge.boundingbox;
+
+            const do_exportMandel = true;
 
             // update the off-screen canvas to reflect the current fractal size and bounding box
             this.constantsExportM.update(rect);
 
             this.canvasExportM.height = this.canvasExportM.width * rect.ratioHW;
+
             this.constantsExportM.updateCanvas(this.canvasExportM);
 
             let msg = 'Will export this fractal in a new tab page using resolution of ' +
@@ -369,20 +383,13 @@ export class GUIDriver {
             alert(msg);
 
             // do the actual drawing
-            this.drawerExport.draw();
-
-            // open the result in new tab
-            var win = window.open();
-            if (!win) {
-                alert("Browser will not allow new tab to be opened. Please give permission!");
-            }else {
-                // convert te contents of the canvas to a BLOB. This BLOB can be used to convert to and
-                // ObjectURL containing an image that can be used as an image-source, or as we do here:
-                // set the URL of the new window to the image.
-                this.canvasExportM.toBlob(function (blob) {
-                    win.document.location = URL.createObjectURL(blob);
+            if (do_exportMandel){
+                this.drawerExportMandelbrot.draw();
+                var windowMandelbrot = window.open();
+                this.canvasExportM.toBlob(function (blob1) {
+                    windowMandelbrot.document.location = URL.createObjectURL(blob1);
                 });
-            }//if/then window opened
+            }
         });
     }// setupEventhandlers()
 
@@ -420,7 +427,6 @@ export class GUIDriver {
     paletteChangedForceRedraw() {
         this.drawerLargeMandelbrot.redrawUsingPalette();
         this.drawerZoom.redrawUsingPalette();
-        this.drawerJulia.redrawUsingPalette();
     }// paletteChangedForceRedraw
 
     /**
@@ -428,22 +434,18 @@ export class GUIDriver {
      */
     recalculateZoombox(){
         // evt.offsetX and evt.offsetY contain the point clicked on the canvas. these need to be translated to the given bounding box (in the Fractal plane)
-        const cx = this.constants.boundingbox.x1 + (this.mouseX / this.constants.canvas_dimensions.w) * this.constants.boundingbox.dimensions.w;
-        const cy = this.constants.boundingbox.y1 - (this.mouseY / this.constants.canvas_dimensions.h) * this.constants.boundingbox.dimensions.h;
-
-        // Update GUI information on current cursor position in the Fractal plane
-        this.elmCursorX.textContent = cx.toString().substr(0, 6);
-        this.elmCursorY.textContent = cy.toString().substr(0, 6);
+        const cx = this.constantsMandelbrotLarge.boundingbox.x1 + (this.mouseX / this.constantsMandelbrotLarge.canvas_dimensions.w) * this.constantsMandelbrotLarge.boundingbox.dimensions.w;
+        const cy = this.constantsMandelbrotLarge.boundingbox.y1 - (this.mouseY / this.constantsMandelbrotLarge.canvas_dimensions.h) * this.constantsMandelbrotLarge.boundingbox.dimensions.h;
 
         // Adjust the zoombox : position in fractal plane and (x,y) location on screen
-        this.zoombox.update(this.constants, cx, cy);
+        this.zoombox.update(this.constantsMandelbrotLarge, cx, cy);
         this.zoombox.updateLocation(this.mouseX, this.mouseY);
 
         // If live preview is enabled use the zoombox to draw the preview.
         if (this.elmLivePreview.checked) {
             this.constantsPreview.update(this.zoombox.boundingbox);
-            this.constantsJulia.update(this.zoombox.boundingbox);
             this.redrawZoomwindow();
+            this.redrawIteratorLines();
         }
 
     }
@@ -463,11 +465,13 @@ export class GUIDriver {
      * Adds the current state to the history and redraws based on the zoomed preview bounding box.
      */
     addToHistoryAndRedraw(){
-        this.historyZoom.push(this.constants.createHistoryObject());
+
+        this.drawerLines.clearCanvas();
+
+        this.historyZoom.push(this.constantsMandelbrotLarge.createHistoryObject());
         this.historyPalette.push(this.palettes.createHistoryObject());
 
-        this.constants.update(this.constantsPreview.boundingbox);
-
+        this.constantsMandelbrotLarge.update(this.constantsPreview.boundingbox);
         this.redrawMainFractal();
 
         this.elmZoomHistoryInfo.textContent = this.historyZoom.length();
@@ -476,8 +480,9 @@ export class GUIDriver {
         this.recalculateZoombox();
 
         this.constantsPreview.update( this.zoombox.boundingbox );
-        this.constantsJulia.update( this.zoombox.boundingbox );
         this.redrawBoth();
+
+
     }// addToHistoryAndRedraw()
 
     /**
@@ -489,7 +494,7 @@ export class GUIDriver {
             let historyItem = this.historyZoom.pop();
             this.elmZoomHistoryInfo.textContent = this.historyZoom.length();
 
-            this.constants.restoreFromHistoryObject(historyItem);
+            this.constantsMandelbrotLarge.restoreFromHistoryObject(historyItem);
             this.constantsPreview.restoreFromHistoryObject(historyItem);
 
             let historyPalette = this.historyPalette.pop();
@@ -527,8 +532,8 @@ export class GUIDriver {
 
         let rect = new Rectangle(x1, y1, x2, y2);
 
-        this.constants.update(rect);
-        this.constants.updateCanvas(this.canvasLargeMandelbrot);
+        this.constantsMandelbrotLarge.update(rect);
+        this.constantsMandelbrotLarge.updateCanvas(this.canvasLargeMandelbrot);
 
         this.canvasPreview.height = this.canvasPreview.width / ratio;
         this.canvasExportM.height  = this.canvasExportM.width / ratio;
@@ -538,9 +543,6 @@ export class GUIDriver {
 
         this.constantsExportM.update(rect);
         this.constantsExportM.updateCanvas(this.canvasExportM);
-
-        this.constantsJulia.update(rect);
-        this.constantsJulia.updateCanvas(this.canvasJuliaPreview);
 
         this.svgOverlay.setAttribute("width",  this.canvasLargeMandelbrot.width);
         this.svgOverlay.setAttribute("height", this.canvasLargeMandelbrot.height);
