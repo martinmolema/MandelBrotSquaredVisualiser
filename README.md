@@ -220,7 +220,7 @@ for (var x=0; x < w; x++){
 
 ```
 
-A working simpe example can be viewed [here](./example). See the code in action on [Youtube](https://youtu.be/oQjXnukH60A).
+A working simpe example can be viewed [here](http://wiskunde.molema.org/example/). See the code in action on [Youtube](https://youtu.be/oQjXnukH60A).
 
 ## Links to working examples
 
