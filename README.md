@@ -165,29 +165,10 @@ whereas the HSL has a more complicated set using three different values (one of 
 By using a Modulo function the palette cycles back to the beginning if the offset would create too high a value.
 
 ```javascript
-    let ratio       =  iterations / MAX_ITERATIONS;
-    let ratedRatio  = Math.ceil(ratio * maxRangeRGB); // integer needed!
-    ratedRatio     += Math.ceil((offset / 100) * maxRangeRGB);
-    ratedRatio      = ratedRatio % maxRangeRGB;
-```
-Combined:
-```javascript
-function createColorFromIterations(iterations, offset){
-
-    let ratio       =  iterations / MAX_ITERATIONS;
-    let ratedRatio  = Math.ceil(ratio * maxRangeRGB); // integer needed!
-    ratedRatio     += Math.ceil((offset / 100) * maxRangeRGB);
-    ratedRatio      = ratedRatio % maxRangeRGB;
-
-    // use the &-operator for bit-wise AND operation
-    // use >>-operator for shifting; the parameter is the number of bits that need to shift.
-    let RGB_R = (ratedRatio & RGB_FILTER_R) >> 16;
-    let RGB_G = (ratedRatio & RGB_FILTER_G) >> 8;
-    let RGB_B = (ratedRatio & RGB_FILTER_B);
-
-    // create an anonymous object (the object property-names are generated from the variable-names
-    return {RGB_R, RGB_G, RGB_B};
-}
+    // simply use an index for the palette instead of calling a function each time.
+    const realOffset = Math.ceil((this.offset / 100.0) * this.maxIterations);
+    var paletteIndex = (realOffset + iter) % MAX_ITERATIONS;
+    var color = palette[paletteIndex]
 ```
 
 ## Speed-up
@@ -196,28 +177,14 @@ CPU-intensive calculations per pixel. By calculating for each value of an iterat
 palette the conversion from iteration to an RGB-color value can be simplified:
 
 ```javascript
-var palette = new Array(MAX_ITERATIONS + 1);
-for (var j = 0;j <= MAX_ITERATIONS; j++) {
-    palette[j]= createColorFromIterations(j, offset);
-}
 
-for (var x=0; x < w; x++){
-    for(var y=0; y < h; y++){
-        var index = (y * w) + x;
-        var iter = iterations[index];
-
-        // simply use an index for the palette instead of calling a function each time.
-        var color = palette[iter]
-
-        let array_index = (y * w * 4 + x * 4);
-
-        imageRGBValues[array_index + 0] = color.RGB_R; // red
-        imageRGBValues[array_index + 1] = color.RGB_G; // green
-        imageRGBValues[array_index + 2] = color.RGB_B; // blue
-        imageRGBValues[array_index + 3] = 255; // 255 = full opacity
+function createPalette(){
+    // create the array for the palette
+    palette = new Array(MAX_ITERATIONS + 1);
+    for (var j = 0;j <= MAX_ITERATIONS; j++) {
+        palette[j]= createColorFromIterations(j);
     }
 }
-
 ```
 
 A working simpe example can be viewed [here](http://wiskunde.molema.org/example/). See the code in action on [Youtube](https://youtu.be/oQjXnukH60A).

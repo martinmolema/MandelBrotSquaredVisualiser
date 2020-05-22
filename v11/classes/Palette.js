@@ -20,7 +20,8 @@ export class Palette {
      * @param {int} pos
      */
     getColor(pos){ //OVERRIDE super function
-        const newpos = (this.offset + pos ) % this.maxIterations;
+        const realOffset = Math.ceil((this.offset / 100.0) * this.maxIterations);
+        const newpos = (realOffset + pos) % this.maxIterations;
         return this.colors[newpos];
     }
 
