@@ -234,7 +234,8 @@ Working examples published at my Homepage
   * [v7](http://wiskunde.molema.org/v8) / RGB + HSL palette | proper history for zoom+palette | basic help-screen with the keyboard shortcuts.| resizable canvas | more shortcut keys (check out the dot and comma for color cycling) 
   * [v8](http://wiskunde.molema.org/v8) / Speed improvements/julia set preview
   * [v9](http://wiskunde.molema.org/v9) / Speed + code improvements; declutter GUI; large Julia Set. Export function 
-  * [v10](http://wiskunde.molema.org/v10) /  Removed Julia; added iterator lines; 
+  * [v10](http://wiskunde.molema.org/v10) / Removed Julia; added iterator lines; 
+  * [v11](http://wiskunde.molema.org/v11) / Added loadable .map files from [XFractint](http://manpages.ubuntu.com/manpages/bionic/man1/xfractint.1.html)  containing palettes; improve colorcycling speed
 
 ## Video examples
 Videos available at my [Youtube channel](https://www.youtube.com/playlist?list=PL-n4xRuGyhSGXnHdafaCmPnIzy8SXKyca). 
